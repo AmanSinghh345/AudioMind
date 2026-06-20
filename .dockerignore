@@ -1,0 +1,15 @@
+.git
+.github
+.env
+.agents
+.cph
+.pytest_cache
+__pycache__
+*.py[cod]
+data
+generated_audio
+vector_db
+.chroma
+tests
+evaluation
+0.9.2
