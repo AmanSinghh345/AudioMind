@@ -16,15 +16,24 @@ class TextEnhancer:
         self.api_key = os.getenv("GEMINI_API_KEY")
         self.client = None
         self.model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        self.init_error = None
 
         if self.api_key:
-            from google import genai
+            try:
+                from google import genai
 
-            self.client = genai.Client(api_key=self.api_key)
+                self.client = genai.Client(api_key=self.api_key)
+            except Exception as exc:
+                self.init_error = str(exc)
 
     def enhance_with_gemini(self, input_text: str, style: str = "engaging") -> dict:
         try:
             if not self.client:
+                if self.init_error:
+                    return {
+                        "success": False,
+                        "error": f"Gemini client unavailable: {self.init_error}",
+                    }
                 return {
                     "success": False,
                     "error": (

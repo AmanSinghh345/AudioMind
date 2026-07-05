@@ -14,6 +14,9 @@ audiobook.mp3
 vector_db/
 .chroma/
 data/
+data/uploads/
+data/vector_store/
+data/generated_audio/
 .coverage
 htmlcov/
 .ruff_cache/
@@ -21,6 +24,13 @@ htmlcov/
 .venv/
 venv/
 env/
+node_modules/
+.next/
+apps/web/node_modules/
+apps/web/.next/
+apps/web/out/
+apps/api/.pytest_cache/
+apps/api/htmlcov/
 .idea/
 .vscode/
 .cph/

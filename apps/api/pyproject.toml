@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "audiomind"
 version = "1.0.0"
 description = "Source-grounded RAG study tutor and chapter-wise audiobook generator"
-readme = "README.md"
+readme = "../../README.md"
 requires-python = ">=3.10"
 authors = [{name = "AudioMind Contributors"}]
 classifiers = [

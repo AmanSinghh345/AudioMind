@@ -8,12 +8,17 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-load_dotenv()
+APP_DIR = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+
+load_dotenv(PROJECT_ROOT / ".env")
+load_dotenv(APP_DIR / ".env", override=False)
+load_dotenv(override=False)
 
 
 @dataclass(frozen=True)
 class Settings:
-    data_dir: Path = Path(os.getenv("AUDIOMIND_DATA_DIR", "data"))
+    data_dir: Path = Path(os.getenv("AUDIOMIND_DATA_DIR", str(PROJECT_ROOT / "data")))
     max_upload_mb: int = int(os.getenv("MAX_UPLOAD_MB", "25"))
     chunk_size: int = int(os.getenv("CHUNK_SIZE", "900"))
     chunk_overlap: int = int(os.getenv("CHUNK_OVERLAP", "150"))
@@ -26,13 +31,17 @@ class Settings:
     kokoro_env_name: str = os.getenv("KOKORO_ENV_NAME", "ai")
     tesseract_cmd: str | None = os.getenv("TESSERACT_CMD")
 
+    def __post_init__(self) -> None:
+        if not self.data_dir.is_absolute():
+            object.__setattr__(self, "data_dir", PROJECT_ROOT / self.data_dir)
+
     @property
     def database_path(self) -> Path:
         return self.data_dir / "audiomind.db"
 
     @property
     def vector_path(self) -> Path:
-        return self.data_dir / "chroma"
+        return self.data_dir / "vector_store"
 
     @property
     def upload_path(self) -> Path:
@@ -40,7 +49,7 @@ class Settings:
 
     @property
     def audio_path(self) -> Path:
-        return self.data_dir / "audio"
+        return self.data_dir / "generated_audio"
 
     def ensure_directories(self) -> None:
         for path in (self.data_dir, self.vector_path, self.upload_path, self.audio_path):

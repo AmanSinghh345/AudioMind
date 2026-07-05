@@ -20,7 +20,7 @@ def test_empty_audio_input_is_rejected(tmp_path):
 
 
 def test_worker_path_is_packaged():
-    worker = Path(tts.__file__).resolve().parents[1] / "scripts" / "kokoro_worker.py"
+    worker = Path(tts.__file__).resolve().parents[3] / "scripts" / "kokoro_worker.py"
     assert worker.exists()
 
 

@@ -210,6 +210,14 @@ class Repository:
             ).fetchall()
         return [dict(row) for row in rows]
 
+    def list_collection_chunks(self, collection_id: str) -> list[dict[str, Any]]:
+        with self._connect() as connection:
+            rows = connection.execute(
+                "SELECT * FROM chunks WHERE collection_id=? ORDER BY filename, chunk_index",
+                (collection_id,),
+            ).fetchall()
+        return [dict(row) for row in rows]
+
     def create_audiobook(
         self, document_id: str, title: str, mode: str, voice: str,
         chapters: list[dict[str, Any]],

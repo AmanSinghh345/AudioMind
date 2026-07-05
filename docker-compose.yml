@@ -1,15 +1,25 @@
 services:
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
     command: uvicorn api:app --host 0.0.0.0 --port 8000
-    env_file: .env
-    ports: ["8000:8000"]
-    volumes: ["audiomind-data:/app/data"]
+    env_file:
+      - .env
+    environment:
+      AUDIOMIND_DATA_DIR: /app/data
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+
   web:
-    build: .
-    command: streamlit run streamlit_app.py --server.address 0.0.0.0
-    env_file: .env
-    ports: ["8501:8501"]
-    volumes: ["audiomind-data:/app/data"]
-volumes:
-  audiomind-data:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api

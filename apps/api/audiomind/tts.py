@@ -34,7 +34,7 @@ class AudioGenerator:
                 segment_dir.mkdir()
                 text_path.write_text(text, encoding="utf-8")
 
-                runner = Path(__file__).resolve().parents[1] / "scripts" / "kokoro_worker.py"
+                runner = Path(__file__).resolve().parents[3] / "scripts" / "kokoro_worker.py"
                 command = self._command(runner, text_path, segment_dir)
                 result = subprocess.run(
                     command,
